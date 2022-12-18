@@ -15,7 +15,8 @@ exports.getSimpleReceipts = () => {
 function calculatePoints(receipt) {
   points = 0;
 
-  function retailerName(receipt) {
+
+  function retailerNameLength(receipt) {
     let count = 0,
       regex = /^[a-zA-Z0-9]$/;
 
@@ -25,20 +26,26 @@ function calculatePoints(receipt) {
       }
     }
     points += count;
+    // console.log("retailerNameLength", 6, points) // 6
   }
 
-  function isRoundDollarAmount(receipt) {
+
+  function isRounded(receipt) {
     receipt.total % 1 === 0 ? (points += 50) : (points += 0);
   }
+
 
   function isMultipleOf25(receipt) {
     receipt.total % 0.25 === 0 ? (points += 25) : (points += 0);
   }
 
+
   function fiveForEveryTwo(receipt) {
     let halfItems = Math.floor(receipt.items.length / 2);
     points += halfItems * 5;
+    // console.log("fiveForEveryTwo", 16, points)
   }
+
 
   function isDescriptionLength3(receipt) {
     for (let item of receipt.items) {
@@ -46,7 +53,9 @@ function calculatePoints(receipt) {
         points += Math.ceil(item.price * 0.2);
       }
     }
+    // console.log("isDescriptionLength3", 19, points)
   }
+
 
   // Assuming date is YYYY-MM-DD
   function isDateOdd(receipt) {
@@ -56,7 +65,9 @@ function calculatePoints(receipt) {
     if (day % 2 !== 0) {
       points += 6;
     }
+    // console.log("isDateOdd", 25, points)
   }
+
 
   function between2And4(receipt) {
     let time = receipt.purchaseTime;
@@ -67,8 +78,8 @@ function calculatePoints(receipt) {
     }
   }
 
-  retailerName(receipt);
-  isRoundDollarAmount(receipt);
+  retailerNameLength(receipt);
+  isRounded(receipt);
   isMultipleOf25(receipt);
   fiveForEveryTwo(receipt);
   isDescriptionLength3(receipt);
@@ -78,35 +89,54 @@ function calculatePoints(receipt) {
   return points;
 }
 
-console.log(calculatePoints(mnmReceipt)); //=> 109/99
-console.log(calculatePoints(targetReceipt)); //=> 25/25
+// console.log(calculatePoints(morningReceipts)) //=> 15
+// console.log(calculatePoints(simpleReceipts)) //=> 31
+// console.log(calculatePoints(mnmReceipt)); //=> 109
+// console.log(calculatePoints(targetReceipt)); //=> 25
 
-// function getPoints(receipt) {
-//   let points = 0;
 
-// retailerNamePoints
-//   points += receipt.retailer.length;
+// Alternative solution
+function getPoints(receipt) {
+  let points = 0;
 
-// isRoundDollarAmount
-//   points += receipt.total % 1 === 0 ? 50 : 0;
+// retailerNameLength
+  points += receipt.retailer.replace(/[^a-zA-Z0-9]/g, '').length;
+    console.log(6, points)
+
+// isRounded
+  points += receipt.total % 1 === 0 ? 50 : 0;
+
 
 // isMultipleOf25
-//   points += receipt.total % 0.25 === 0 ? 25 : 0;
+  points += receipt.total % 0.25 === 0 ? 25 : 0;
+
 
 // fiveForEveryTwo
-//   points += Math.floor(receipt.items.length / 2) * 5;
+  points += Math.floor(receipt.items.length / 2) * 5;
+    console.log(16, points)
 
-// isDescriptionLength
-//   points += receipt.items.reduce((acc, item) => {
-//     acc += item.description.length % 3 === 0 ? Math.ceil(item.price * 0.2) : 0;
-//     return acc;
-//   }, 0);
+// isDescriptionLength3
+  points += receipt.items.filter(item => {
+    item.shortDescription.length % 3 === 0 ? Math.ceil(item.price * 0.2) : 0
+  })
+console.log(19, points);
 
 // isDateOdd
-//   points += receipt.date.getDate() % 2 === 1 ? 6 : 0;
+  points += receipt.purchaseDate.slice(-2) % 2 === 1 ? 6 : 0;
+console.log(25, points);
 
 // between2And4
-//   points +=
-//     receipt.time.getHours() > 14 && receipt.time.getHours() < 16 ? 10 : 0;
-//   return points;
-// }
+  points +=
+    +receipt.purchaseTime.replace(':', '') > 1400 &&
+    +receipt.purchaseTime.replace(':', '') < 1600
+      ? 10
+      : 0;
+
+
+  return points;
+}
+
+// console.log(getPoints(morningReceipts)) //=> 15
+// console.log(getPoints(simpleReceipts)) //=> 31
+// console.log(getPoints(mnmReceipt)); //=> 109
+console.log(getPoints(targetReceipt)); //=> 25
