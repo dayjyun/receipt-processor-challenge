@@ -5,12 +5,17 @@ const mnmReceipt = require("./examples/m&mexample.json");
 const targetReceipt = require("./examples/target-example.json");
 
 function idGenerator(){
-    let id = '',
-        char = 'abcdefghijklmonpqrstuvwxyz0123456789';
+    let id = "";
+    let char = "abcdefghijklmonpqrstuvwxyz0123456789";
 
-    for(let i = 0; i < 10; i++){
-        id += char.charAt(Math.floor(Math.random() * 36))
+    for (let i = 0; i < 36; i++) {
+      id += char.charAt(Math.floor(Math.random() * 36));
+
+      if (i === 7 || i === 11 || i === 15 || i === 19) {
+        id += "-";
+      }
     }
+
     return id;
 }
 
@@ -20,7 +25,7 @@ function idGenerator(){
     }
 })()
 
-console.log(simpleReceipts)
+// console.log(simpleReceipts)
 
 // let nextReceiptId = 2;
 // function newReceipt(){

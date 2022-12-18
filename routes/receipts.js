@@ -44,7 +44,7 @@ router.post("/process", async (req, res) => {
   const receipt = await addReceipt(req.body)
   res.send(receipt.id)
   // TAKES JSON
-  // RETURN JSON obj "id": ###
+  // RETURN JSON obj "id": 8-4-4-4-12
 });
 
 module.exports = router;
