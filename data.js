@@ -4,12 +4,30 @@ const simpleReceipts = require("./examples/simple-receipt.json");
 const mnmReceipt = require("./examples/m&mexample.json");
 const targetReceipt = require("./examples/target-example.json");
 
-let nextReceiptId = 2;
-function newReceipt(){
-    const newId = nextReceiptId;
-    nextReceiptId++;
-    return newId;
+function idGenerator(){
+    let id = '',
+        char = 'abcdefghijklmonpqrstuvwxyz0123456789';
+
+    for(let i = 0; i < 10; i++){
+        id += char.charAt(Math.floor(Math.random() * 36))
+    }
+    return id;
 }
+
+(function addIdToReceipt() {
+    for(let receipt in simpleReceipts){
+        receipt.id = idGenerator()
+    }
+})()
+
+console.log(simpleReceipts)
+
+// let nextReceiptId = 2;
+// function newReceipt(){
+//     const newId = nextReceiptId;
+//     nextReceiptId++;
+//     return newId;
+// }
 
 function calculatePoints(receipt) {
   points = 0;
@@ -126,24 +144,27 @@ function getPoints(receipt) {
   return points;
 }
 
+
 getAllReceipts = () => {
-    return Object.values(morningReceipts, simpleReceipts)
+    let obj1 = Object.values(morningReceipts)
+    let obj2 = Object.values(simpleReceipts)
+    return [...obj1, ...obj2]
 }
 
 
-getMorningReceipts = () => {
-  return Object.values(morningReceipts);
-};
+// getMorningReceipts = () => {
+//   return Object.values(morningReceipts);
+// };
 
 
-getSimpleReceipts = () => {
-  return Object.values(simpleReceipts);
-};
+// getSimpleReceipts = () => {
+//   return Object.values(simpleReceipts);
+// };
 
 
 getReceiptPoints = (receiptId) => {
-    const receipt = {...morningReceipts[receiptId]}
-    receipt.points = calculatePoints(morningReceipts)
+    const receipt = {...simpleReceipts[receiptId]}
+    receipt.points = calculatePoints(simpleReceipts)
     return receipt.points
 }
 
@@ -151,13 +172,14 @@ getReceiptPoints = (receiptId) => {
 addReceipt = (data) => {
     const receiptId = newReceipt();
     data.receiptId = receiptId;
-
+    simpleReceipts[receiptId] = data;
+    return simpleReceipts[receiptId];
 }
 
 module.exports = {
   getAllReceipts,
-  getMorningReceipts,
-  getSimpleReceipts,
+//   getMorningReceipts,
+//   getSimpleReceipts,
   getReceiptPoints,
   addReceipt,
 };
