@@ -4,7 +4,8 @@ const simpleReceipts = require("./examples/simple-receipt.json");
 const mnmReceipt = require("./examples/m&mexample.json");
 const targetReceipt = require("./examples/target-example.json");
 
-let receiptsArr = [simpleReceipts]
+// ! let receiptsArr = [simpleReceipts]
+let receiptsObj = {simplereceiptsObj}
 
 // Add Ids to each receipt
 function idGenerator(){
@@ -23,12 +24,19 @@ function idGenerator(){
 }
 
 
-for(let i = 0; i < receiptsArr.length; i++){
-  let obj = receiptsArr[i]
-  if(obj.id === undefined){
-    obj.id = idGenerator();
+for(let obj in receipts){
+  if (!obj.id){
+    obj.id = idGenerator()
   }
 }
+
+// !
+// for(let i = 0; i < receiptsArr.length; i++){
+//   let obj = receiptsArr[i]
+//   if(obj.id === undefined){
+//     obj.id = idGenerator();
+//   }
+// }
 
 
 // Method 1
@@ -139,6 +147,17 @@ function calculatePoints(receipt) {
 //   return points;
 // }
 
+let storeReceipt = (id, receipt, points) => {
+  receipts[id] = {receipt, points}
+}
+
+let getReceiptById = id => {
+  return receipts[id] ? receipts[id].receipt : null;
+}
+
+let getPointsById = id => {
+  return receipts[id] ? receipts[id].points : null;
+}
 
 let getMorningReceipts = () => {
   return morningReceipts
@@ -150,23 +169,25 @@ let getSimpleReceipts = () => {
 };
 
 
-let getReceiptPoints = (receiptId) => {
-    const receipt = {...simpleReceipts[receiptId]}
-    receipt.points = calculatePoints(simpleReceipts)
-    return receipt.points
-}
+// let getReceiptPoints = (receiptId) => {
+//     const receipt = {...simpleReceipts[receiptId]}
+//     receipt.points = calculatePoints(simpleReceipts)
+//     return receipt.points
+// }
 
 
-let addReceipt = (data) => {
-    const id = idGenerator();
-    data.id = id;
-    receiptsArr.push(simpleReceipts[id] = data);
-    return receiptsArr
-}
+// let addReceipt = (data) => {
+//     const id = idGenerator();
+//     data.id = id;
+//     receiptsArr.push(simpleReceipts[id] = data);
+//     return receiptsArr
+// }
 
 module.exports = {
+  idGenerator,
+  calculatePoints,
   getMorningReceipts,
   getSimpleReceipts,
-  getReceiptPoints,
-  addReceipt,
+  // getReceiptPoints,
+  // addReceipt,
 };

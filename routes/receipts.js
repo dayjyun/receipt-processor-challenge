@@ -4,12 +4,17 @@ const {
   getMorningReceipts,
   getSimpleReceipts,
   getReceiptPoints,
-  addReceipt
+  addReceipt,
+  calculatePoints,
+  idGenerator
 } = require('../data')
 
 // GET
 router.get("/:receiptId/points", async (req, res) => {
   const { receiptId } = req.params;
+
+  const receipt = getReceiptById(receiptId)
+  const points = getPointsById(receiptId)
 
   if (!receiptId) {
     const error = new Error("No receipt found for that id");
@@ -34,8 +39,15 @@ router.get('/simple', async(req, res) => {
 
 // POST
 router.post("/process", async (req, res) => {
-  const receipt = await addReceipt(req.body)
-  res.send(receipt.id)
+  // const receipt = await addReceipt(req.body)
+  const receipt = req.body;
+  const points = calculatePoints(receipt)
+  const id = idGenerator()
+
+  storeReceipt(id, receipt, points)
+
+  res.json({ id: id })
+  // res.send(receipt.id)
   // TAKES JSON
   // RETURN JSON obj "id": 8-4-4-4-12
 });
