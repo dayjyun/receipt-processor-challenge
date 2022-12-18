@@ -4,6 +4,13 @@ const simpleReceipts = require("./examples/simple-receipt.json");
 const mnmReceipt = require("./examples/m&mexample.json");
 const targetReceipt = require("./examples/target-example.json");
 
+let nextReceiptId = 2;
+function newReceipt(){
+    const newId = nextReceiptId;
+    nextReceiptId++;
+    return newId;
+}
+
 function calculatePoints(receipt) {
   points = 0;
 
@@ -119,14 +126,20 @@ function getPoints(receipt) {
   return points;
 }
 
+getAllReceipts = () => {
+    return Object.values(morningReceipts, simpleReceipts)
+}
+
 
 getMorningReceipts = () => {
   return Object.values(morningReceipts);
 };
 
+
 getSimpleReceipts = () => {
   return Object.values(simpleReceipts);
 };
+
 
 getReceiptPoints = (receiptId) => {
     const receipt = {...morningReceipts[receiptId]}
@@ -134,8 +147,17 @@ getReceiptPoints = (receiptId) => {
     return receipt.points
 }
 
+
+addReceipt = (data) => {
+    const receiptId = newReceipt();
+    data.receiptId = receiptId;
+
+}
+
 module.exports = {
+  getAllReceipts,
   getMorningReceipts,
   getSimpleReceipts,
   getReceiptPoints,
+  addReceipt,
 };

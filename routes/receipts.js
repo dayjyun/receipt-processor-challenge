@@ -3,7 +3,8 @@ const router = require("express").Router()
 const {
   getMorningReceipts,
   getSimpleReceipts,
-  getReceiptPoints
+  getReceiptPoints,
+  getAllReceipts
 } = require('../data')
 
 // GET
@@ -31,7 +32,15 @@ router.get('/simple', async(req, res) => {
 })
 
 
+router.get('/', async(req, res) => {
+  const receipts = await getAllReceipts()
+  res.send(receipts)
+})
+
+
 // POST
-router.post("/process", async (req, res) => {});
+router.post("/process", async (req, res) => {
+
+});
 
 module.exports = router;
