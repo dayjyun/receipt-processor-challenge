@@ -16,7 +16,15 @@ function calculatePoints(receipt) {
   points = 0;
 
   function retailerNamePoints(receipt) {
-    points += receipt.retailer.length;
+    let count = 0,
+        regex = /^[a-zA-Z0-9]$/;
+
+    for(let ch of receipt.retailer){
+        if(regex.test(ch)){
+            count++
+        }
+    }
+    points += count;
   }
 
   function isRoundDollarAmount(receipt) {
