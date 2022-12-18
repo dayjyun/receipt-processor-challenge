@@ -1,18 +1,13 @@
-const morningReceipts = require("./examples/morning-receipt.json");
 const simpleReceipts = require("./examples/simple-receipt.json");
 
-const mnmReceipt = require("./examples/m&mexample.json");
-const targetReceipt = require("./examples/target-example.json");
-
-// ! let receiptsArr = [simpleReceipts]
-let receiptsObj = {simplereceiptsObj}
+let receiptsArr = [simpleReceipts]
 
 // Add Ids to each receipt
 function idGenerator(){
     let id = "";
     let char = "abcdefghijklmonpqrstuvwxyz0123456789";
 
-    for (let i = 0; i < 36; i++) {
+    for (let i = 0; i < 32; i++) {
       id += char.charAt(Math.floor(Math.random() * 36));
 
       if (i === 7 || i === 11 || i === 15 || i === 19) {
@@ -23,20 +18,12 @@ function idGenerator(){
     return id;
 }
 
-
-for(let obj in receipts){
-  if (!obj.id){
-    obj.id = idGenerator()
+for(let i = 0; i < receiptsArr.length; i++){
+  let receipt = receiptsArr[i]
+  if(receipt.id === undefined){
+    receipt.id = idGenerator()
   }
 }
-
-// !
-// for(let i = 0; i < receiptsArr.length; i++){
-//   let obj = receiptsArr[i]
-//   if(obj.id === undefined){
-//     obj.id = idGenerator();
-//   }
-// }
 
 
 // Method 1
@@ -46,6 +33,7 @@ function calculatePoints(receipt) {
   function retailerNameLength(receipt) {
     let count = 0,
       regex = /^[a-zA-Z0-9]$/;
+
 
     for (let ch of receipt.retailer) {
       if (regex.test(ch)) {
@@ -147,47 +135,48 @@ function calculatePoints(receipt) {
 //   return points;
 // }
 
-let storeReceipt = (id, receipt, points) => {
-  receipts[id] = {receipt, points}
-}
 
 let getReceiptById = id => {
-  return receipts[id] ? receipts[id].receipt : null;
+  for(let receipt of receiptsArr){
+    if(receipt.id === id){
+      return receipt;
+    }
+  }
 }
 
 let getPointsById = id => {
-  return receipts[id] ? receipts[id].points : null;
+  for(let receipt of receiptsArr){
+    receipt.points = calculatePoints(receipt)
+    if (receipt.id === id) {
+      return receipt.points;
+    }
+  }
 }
-
-let getMorningReceipts = () => {
-  return morningReceipts
-};
-
 
 let getSimpleReceipts = () => {
   return simpleReceipts
 };
 
+let getAllReceipts = () => {
+  return receiptsArr;
+}
 
-// let getReceiptPoints = (receiptId) => {
-//     const receipt = {...simpleReceipts[receiptId]}
-//     receipt.points = calculatePoints(simpleReceipts)
-//     return receipt.points
-// }
+let addReceipt = (receipt) => {
+  let id = idGenerator();
+  let newReceipt = { ...receipt, id };
+  receiptsArr.push(newReceipt);
+  return newReceipt;
+};
 
-
-// let addReceipt = (data) => {
-//     const id = idGenerator();
-//     data.id = id;
-//     receiptsArr.push(simpleReceipts[id] = data);
-//     return receiptsArr
-// }
+// console.log('arr', receiptsArr)
+// console.log(0, receiptsArr[0])
+// console.log(1, receiptsArr[1])
 
 module.exports = {
-  idGenerator,
-  calculatePoints,
-  getMorningReceipts,
   getSimpleReceipts,
-  // getReceiptPoints,
-  // addReceipt,
+  getAllReceipts,
+  addReceipt,
+
+  getReceiptById,
+  getPointsById,
 };

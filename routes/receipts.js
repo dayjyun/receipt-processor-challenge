@@ -1,33 +1,45 @@
 const router = require("express").Router()
 
+const { application } = require("express");
 const {
   getMorningReceipts,
   getSimpleReceipts,
-  getReceiptPoints,
   addReceipt,
-  calculatePoints,
-  idGenerator
+  getReceiptById,
+  getPointsById,
+  getAllReceipts
 } = require('../data')
 
 // GET
-router.get("/:receiptId/points", async (req, res) => {
+router.get("/:receiptId/points", (req, res) => {
   const { receiptId } = req.params;
 
   const receipt = getReceiptById(receiptId)
   const points = getPointsById(receiptId)
 
-  if (!receiptId) {
+  if (receipt) {
+    res.status(200);
+    res.json({ points })
+  } else {
     const error = new Error("No receipt found for that id");
     error.status = 404;
     throw error;
   }
-  res.status(200);
 });
 
 
-router.get("/morning", async(req, res) => {
-  const morningReceipts = await getMorningReceipts()
-  res.send(morningReceipts);
+router.get("/:receiptId", (req, res) => {
+  const { receiptId } = req.params;
+  const receipt = getReceiptById(receiptId)
+
+  if (receipt) {
+    res.status(200);
+    res.json(receipt)
+  } else {
+    const error = new Error("No receipt found for that id");
+    error.status = 404;
+    throw error;
+  }
 });
 
 
@@ -37,19 +49,17 @@ router.get('/simple', async(req, res) => {
 })
 
 
+router.get('/', async(req, res) => {
+  const allReceipts = await getAllReceipts()
+  res.send(allReceipts)
+})
+
+
 // POST
 router.post("/process", async (req, res) => {
-  // const receipt = await addReceipt(req.body)
-  const receipt = req.body;
-  const points = calculatePoints(receipt)
-  const id = idGenerator()
-
-  storeReceipt(id, receipt, points)
-
-  res.json({ id: id })
-  // res.send(receipt.id)
-  // TAKES JSON
-  // RETURN JSON obj "id": 8-4-4-4-12
+  const receipt = await addReceipt(req.body);
+  res.status(201)
+  res.json({ id: receipt.id });
 });
 
 module.exports = router;
