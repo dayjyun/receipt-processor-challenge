@@ -4,7 +4,6 @@ const {
   getMorningReceipts,
   getSimpleReceipts,
   getReceiptPoints,
-  getAllReceipts,
   addReceipt
 } = require('../data')
 
@@ -30,12 +29,6 @@ router.get("/morning", async(req, res) => {
 router.get('/simple', async(req, res) => {
   const simpleReceipts = await getSimpleReceipts()
   res.send(simpleReceipts)
-})
-
-
-router.get('/', async(req, res) => {
-  const receipts = await getAllReceipts()
-  res.send(receipts)
 })
 
 

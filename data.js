@@ -4,6 +4,8 @@ const simpleReceipts = require("./examples/simple-receipt.json");
 const mnmReceipt = require("./examples/m&mexample.json");
 const targetReceipt = require("./examples/target-example.json");
 
+
+// Add Ids to each receipt
 function idGenerator(){
     let id = "";
     let char = "abcdefghijklmonpqrstuvwxyz0123456789";
@@ -19,24 +21,15 @@ function idGenerator(){
     return id;
 }
 
-(function addIdToReceipt() {
-    for(let receipt in simpleReceipts){
-        receipt.id = idGenerator()
-    }
-})()
 
-// console.log(simpleReceipts)
+for(let i = 0; i < simpleReceipts.length; i++){
+  simpleReceipts[i].id = idGenerator();
+}
 
-// let nextReceiptId = 2;
-// function newReceipt(){
-//     const newId = nextReceiptId;
-//     nextReceiptId++;
-//     return newId;
-// }
 
+// Method 1
 function calculatePoints(receipt) {
   points = 0;
-
 
   function retailerNameLength(receipt) {
     let count = 0,
@@ -108,7 +101,7 @@ function calculatePoints(receipt) {
 }
 
 
-// Alternative solution
+// Method 2 (Alternative)
 function getPoints(receipt) {
   let points = 0;
 
@@ -145,36 +138,28 @@ function getPoints(receipt) {
       ? 10
       : 0;
 
-
   return points;
 }
 
 
-getAllReceipts = () => {
-    let obj1 = Object.values(morningReceipts)
-    let obj2 = Object.values(simpleReceipts)
-    return [...obj1, ...obj2]
-}
+let getMorningReceipts = () => {
+  return morningReceipts
+};
 
 
-// getMorningReceipts = () => {
-//   return Object.values(morningReceipts);
-// };
+let getSimpleReceipts = () => {
+  return simpleReceipts
+};
 
 
-// getSimpleReceipts = () => {
-//   return Object.values(simpleReceipts);
-// };
-
-
-getReceiptPoints = (receiptId) => {
+let getReceiptPoints = (receiptId) => {
     const receipt = {...simpleReceipts[receiptId]}
     receipt.points = calculatePoints(simpleReceipts)
     return receipt.points
 }
 
 
-addReceipt = (data) => {
+let addReceipt = (data) => {
     const receiptId = newReceipt();
     data.receiptId = receiptId;
     simpleReceipts[receiptId] = data;
@@ -182,9 +167,8 @@ addReceipt = (data) => {
 }
 
 module.exports = {
-  getAllReceipts,
-//   getMorningReceipts,
-//   getSimpleReceipts,
+  getMorningReceipts,
+  getSimpleReceipts,
   getReceiptPoints,
   addReceipt,
 };
