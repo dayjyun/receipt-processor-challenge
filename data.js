@@ -4,6 +4,7 @@ const simpleReceipts = require("./examples/simple-receipt.json");
 const mnmReceipt = require("./examples/m&mexample.json");
 const targetReceipt = require("./examples/target-example.json");
 
+let receiptsArr = [simpleReceipts]
 
 // Add Ids to each receipt
 function idGenerator(){
@@ -22,8 +23,11 @@ function idGenerator(){
 }
 
 
-for(let i = 0; i < simpleReceipts.length; i++){
-  simpleReceipts[i].id = idGenerator();
+for(let i = 0; i < receiptsArr.length; i++){
+  let obj = receiptsArr[i]
+  if(obj.id === undefined){
+    obj.id = idGenerator();
+  }
 }
 
 
@@ -102,44 +106,38 @@ function calculatePoints(receipt) {
 
 
 // Method 2 (Alternative)
-function getPoints(receipt) {
-  let points = 0;
+// function getPoints(receipt) {
+//   let points = 0;
 
-// retailerNameLength
-  points += receipt.retailer.replace(/[^a-zA-Z0-9]/g, '').length;
+// // retailerNameLength
+//   points += receipt.retailer.replace(/[^a-zA-Z0-9]/g, '').length;
 
+// // isRounded
+//   points += receipt.total % 1 === 0 ? 50 : 0;
 
-// isRounded
-  points += receipt.total % 1 === 0 ? 50 : 0;
+// // isMultipleOf25
+//   points += receipt.total % 0.25 === 0 ? 25 : 0;
 
+// // fiveForEveryTwo
+//   points += Math.floor(receipt.items.length / 2) * 5;
 
-// isMultipleOf25
-  points += receipt.total % 0.25 === 0 ? 25 : 0;
+// // isDescriptionLength3
+//   receipt.items
+//     .filter((item) => item.shortDescription.length % 3 === 0)
+//     .forEach((i) => (points += Math.ceil(i.price * 0.2)));
 
+// // isDateOdd
+//   points += receipt.purchaseDate.slice(-2) % 2 === 1 ? 6 : 0;
 
-// fiveForEveryTwo
-  points += Math.floor(receipt.items.length / 2) * 5;
+// // between2And4
+//   points +=
+//     +receipt.purchaseTime.replace(':', '') > 1400 &&
+//     +receipt.purchaseTime.replace(':', '') < 1600
+//       ? 10
+//       : 0;
 
-
-// isDescriptionLength3
-  receipt.items
-    .filter((item) => item.shortDescription.length % 3 === 0)
-    .forEach((i) => (points += Math.ceil(i.price * 0.2)));
-
-
-// isDateOdd
-  points += receipt.purchaseDate.slice(-2) % 2 === 1 ? 6 : 0;
-
-
-// between2And4
-  points +=
-    +receipt.purchaseTime.replace(':', '') > 1400 &&
-    +receipt.purchaseTime.replace(':', '') < 1600
-      ? 10
-      : 0;
-
-  return points;
-}
+//   return points;
+// }
 
 
 let getMorningReceipts = () => {
@@ -160,10 +158,10 @@ let getReceiptPoints = (receiptId) => {
 
 
 let addReceipt = (data) => {
-    const receiptId = newReceipt();
-    data.receiptId = receiptId;
-    simpleReceipts[receiptId] = data;
-    return simpleReceipts[receiptId];
+    const id = idGenerator();
+    data.id = id;
+    receiptsArr.push(simpleReceipts[id] = data);
+    return receiptsArr
 }
 
 module.exports = {
