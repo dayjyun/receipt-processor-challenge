@@ -2,8 +2,7 @@ const router = require("express").Router()
 
 const { application } = require("express");
 const {
-  getMorningReceipts,
-  getSimpleReceipts,
+  // getSimpleReceipts,
   addReceipt,
   getReceiptById,
   getPointsById,
@@ -13,7 +12,6 @@ const {
 // GET
 router.get("/:receiptId/points", (req, res) => {
   const { receiptId } = req.params;
-
   const receipt = getReceiptById(receiptId)
   const points = getPointsById(receiptId)
 
@@ -41,12 +39,6 @@ router.get("/:receiptId", (req, res) => {
     throw error;
   }
 });
-
-
-router.get('/simple', async(req, res) => {
-  const simpleReceipts = await getSimpleReceipts()
-  res.send(simpleReceipts)
-})
 
 
 router.get('/', async(req, res) => {

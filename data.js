@@ -1,6 +1,9 @@
 const simpleReceipts = require("./examples/simple-receipt.json");
+const morningReceipt = require('./examples/morning-receipt.json')
+const mmReceipt = require('./examples/m&m-receipt.json')
+const targetReceipt = require('./examples/target-receipt.json')
 
-let receiptsArr = [simpleReceipts]
+let receiptsArr = [simpleReceipts, morningReceipt, mmReceipt, targetReceipt]
 
 // Add Ids to each receipt
 function idGenerator(){
@@ -18,10 +21,14 @@ function idGenerator(){
     return id;
 }
 
+// Generate ID and Points if undefined
 for(let i = 0; i < receiptsArr.length; i++){
   let receipt = receiptsArr[i]
   if(receipt.id === undefined){
     receipt.id = idGenerator()
+  }
+  if(receipt.points === undefined){
+    receipt.points = calculatePoints(receipt)
   }
 }
 
@@ -136,6 +143,11 @@ function calculatePoints(receipt) {
 // }
 
 
+// let getSimpleReceipts = () => {
+//   return simpleReceipts
+// };
+
+
 let getReceiptById = id => {
   for(let receipt of receiptsArr){
     if(receipt.id === id){
@@ -153,30 +165,21 @@ let getPointsById = id => {
   }
 }
 
-let getSimpleReceipts = () => {
-  return simpleReceipts
-};
-
 let getAllReceipts = () => {
   return receiptsArr;
 }
 
 let addReceipt = (receipt) => {
   let id = idGenerator();
-  let newReceipt = { ...receipt, id };
+  let points = calculatePoints(receipt)
+  let newReceipt = { ...receipt, id, points };
   receiptsArr.push(newReceipt);
   return newReceipt;
 };
 
-// console.log('arr', receiptsArr)
-// console.log(0, receiptsArr[0])
-// console.log(1, receiptsArr[1])
-
 module.exports = {
-  getSimpleReceipts,
   getAllReceipts,
   addReceipt,
-
   getReceiptById,
   getPointsById,
 };
