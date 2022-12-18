@@ -26,7 +26,6 @@ function calculatePoints(receipt) {
       }
     }
     points += count;
-    // console.log("retailerNameLength", 6, points) // 6
   }
 
 
@@ -43,7 +42,6 @@ function calculatePoints(receipt) {
   function fiveForEveryTwo(receipt) {
     let halfItems = Math.floor(receipt.items.length / 2);
     points += halfItems * 5;
-    // console.log("fiveForEveryTwo", 16, points)
   }
 
 
@@ -53,7 +51,6 @@ function calculatePoints(receipt) {
         points += Math.ceil(item.price * 0.2);
       }
     }
-    // console.log("isDescriptionLength3", 19, points)
   }
 
 
@@ -65,7 +62,6 @@ function calculatePoints(receipt) {
     if (day % 2 !== 0) {
       points += 6;
     }
-    // console.log("isDateOdd", 25, points)
   }
 
 
@@ -101,7 +97,7 @@ function getPoints(receipt) {
 
 // retailerNameLength
   points += receipt.retailer.replace(/[^a-zA-Z0-9]/g, '').length;
-    console.log(6, points)
+
 
 // isRounded
   points += receipt.total % 1 === 0 ? 50 : 0;
@@ -113,17 +109,17 @@ function getPoints(receipt) {
 
 // fiveForEveryTwo
   points += Math.floor(receipt.items.length / 2) * 5;
-    console.log(16, points)
+
 
 // isDescriptionLength3
-  points += receipt.items.filter(item => {
-    item.shortDescription.length % 3 === 0 ? Math.ceil(item.price * 0.2) : 0
-  })
-console.log(19, points);
+  receipt.items
+    .filter((item) => item.shortDescription.length % 3 === 0)
+    .forEach((i) => (points += Math.ceil(i.price * 0.2)));
+
 
 // isDateOdd
   points += receipt.purchaseDate.slice(-2) % 2 === 1 ? 6 : 0;
-console.log(25, points);
+
 
 // between2And4
   points +=
@@ -136,7 +132,7 @@ console.log(25, points);
   return points;
 }
 
-// console.log(getPoints(morningReceipts)) //=> 15
-// console.log(getPoints(simpleReceipts)) //=> 31
-// console.log(getPoints(mnmReceipt)); //=> 109
+console.log(getPoints(morningReceipts)) //=> 15
+console.log(getPoints(simpleReceipts)) //=> 31
+console.log(getPoints(mnmReceipt)); //=> 109
 console.log(getPoints(targetReceipt)); //=> 25
