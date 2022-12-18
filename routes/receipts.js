@@ -1,9 +1,10 @@
 const express = require('express')
 const router = express.Router()
 
-router.get("/", (req, res) => {
-  res.send("receipts home");
-});
+const {
+  getMorningReceipts,
+  getSimpleReceipts
+} = require('../data')
 
 // GET
 router.get("/:receiptId/points", async (req, res) => {
@@ -11,11 +12,24 @@ router.get("/:receiptId/points", async (req, res) => {
 
   if (!receiptId) {
     const error = new Error("No receipt found for that id");
-    error.status = 400;
+    error.status = 404;
     throw error;
   }
   res.status(200);
 });
+
+
+router.get("/morning", async(req, res) => {
+  const morningReceipts = await getMorningReceipts()
+  res.send(morningReceipts);
+});
+
+
+router.get('/simple', async(req, res) => {
+  const simpleReceipts = await getSimpleReceipts()
+  res.send(simpleReceipts)
+})
+
 
 // POST
 router.post("/process", async (req, res) => {});

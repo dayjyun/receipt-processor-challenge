@@ -1,9 +1,11 @@
 const express = require('express')
 const app = express()
+app.use(express.json())
 
 const receiptsRouter = require('./routes/receipts')
-
-// app.use(express.json())
 app.use('/receipts', receiptsRouter);
 
-app.listen(8000)
+
+
+const port = 8000
+app.listen(port, () => console.log(`Server is listening on port ${port}`))
