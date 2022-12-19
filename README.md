@@ -7,11 +7,11 @@ We're going to use Docker in order to run the webservice.
 1. To begin, enter either of the two Image commands shown below on your terminal. <br> Note: In some systems, you will need to open the Docker application first in order get the Docker environment ready.
 
     * Image Id
-        * `docker run -p 5000:8080 235529d35494`
+        * `docker run -p 8080:8080 235529d35494`
 
 
     * Image Tag Name
-        * `docker run -p 5000:8080 dayjyun/receipt-processor-challenge:latest`
+        * `docker run -p 8080:8080 dayjyun/receipt-processor-challenge:latest`
 
 <br>
 
