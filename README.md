@@ -17,9 +17,9 @@ We're going to use Docker in order to run the webservice.
 
 2. Navigate to `localhost:5000` in your browser's search bar.
 
-3. Copy and paste any of the following endpoints on your search bar after `5000`
+3. Copy and paste any of the following endpoints to your search bar after `5000`
 
-Data does not persist and will be
+Data does not persist and will be lost once the Docker Image is closed
 
 # Endpoints
 There are two main routes to be considered marked with an `*`.
