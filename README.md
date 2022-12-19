@@ -4,20 +4,16 @@ Who doesn't love shopping? Best part of all is getting rewarded for spending you
 ## How To Run
 We're going to use Docker in order to run the webservice.
 
-1. To begin, enter either of the two Image commands shown below on your terminal. <br> Note: In some systems, you will need to open the Docker application first in order get the Docker environment ready.
-
-    * Image Id
-        * `docker run -p 8080:8080 235529d35494`
-
+1. To begin, enter the Image command shown below on your terminal. <br> Note: In some systems, you will need to open the Docker application first in order get the Docker environment ready.
 
     * Image Tag Name
         * `docker run -p 8080:8080 dayjyun/receipt-processor-challenge:latest`
 
 <br>
 
-2. Navigate to `localhost:5000` in your browser's search bar.
+2. Navigate to `localhost:8080` in your browser's search bar.
 
-3. Copy and paste any of the following endpoints to your search bar after `5000`
+3. Copy and paste any of the following endpoints to your search bar after `8080`
 
 Data does not persist and will be lost once the Docker Image is closed
 
