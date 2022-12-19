@@ -52,7 +52,6 @@ router.post("/process", async (req, res, next) => {
 
   if(!retailer || !purchaseDate || !purchaseTime || !total || !items.length ){
     const error = new Error("The receipt is invalid");
-    // error.errors = ["The receipt is invalid", "400"]
     error.status = 400;
     return next(error)
   } else {
@@ -63,6 +62,3 @@ router.post("/process", async (req, res, next) => {
 });
 
 module.exports = router;
-
-
-

@@ -1,4 +1,3 @@
-// POST Fetch Request
 fetch("/receipts/process", {
   method: "POST",
   headers: {

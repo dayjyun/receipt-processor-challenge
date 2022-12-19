@@ -1,6 +1,164 @@
 ## How To Run
+In this example, we're going to use Docker in order to run the webservice.
+
+1. To begin, enter either of the two Image commands shown below on your terminal. In some computers, you will need to open Docker application first in order
+
+    * Image Id
+        * `docker run -p 5000:8080 235529d35494`
 
 
+    * Image Tag Name
+        * `docker run -p 5000:8080 dayjyun/receipt-processor-challenge:latest`
+
+<br>
+
+2. Navigate to `localhost:5000` in your browser's search bar.
+
+3. Copy and paste any of the following endpoints on your search bar after `5000`
+
+# Endpoints
+There are two main routes to be considered marked with an `*`.
+I added two additional routes in order to have a more expanded view of the data being rendered
+
+## Get All Receipts
+Returns a list of Receipts
+- Request
+    - Method: GET
+    - URL: `/receipts`
+    - body: none
+
+- Successful Response
+    - Headers:
+        - Content-Type: application/json
+    - Body:
+    ```json
+    {
+      "retailer": "Store Name",
+      "purchaseDate": "2022-01-01",
+      "purchaseTime": "13:00",
+      "total": "2.00",
+      "items": [
+        {
+            "shortDescription": "Item Name",
+            "price": "2.00"
+        }
+      ],
+      "id": "####",
+      "points": "10"
+    }
+    ```
+
+## Get Receipt By Using Receipt ID
+Returns single receipt provided by the receipt's ID
+- Request
+    - Method: GET
+    - URL: `/receipts/{id}`
+    - body: none
+
+- Successful Response
+    - Headers:
+        - Content-Type: application/json
+    - Body:
+    ```json
+    {
+      "retailer": "Store Name",
+      "purchaseDate": "2022-01-01",
+      "purchaseTime": "13:00",
+      "total": "2.00",
+      "items": [
+        {
+          "shortDescription": "Item Name",
+          "price": "2.00"
+        }
+      ],
+      "id": "####",
+      "points": "10"
+    }
+    ```
+- Error Response: No receipt found for that id
+    - Status Code: 404
+    - Headers:
+        - Content-Type: application/json
+    - Body:
+    ```json
+    {
+      "message": "No receipt found for that id",
+      "status": 404
+    }
+    ```
+
+## *Get Points By Using Receipt ID
+Returns points for receipt provided by the receipt's ID
+- Request
+    - Method: GET
+    - URL: `/receipts/{id}/points`
+    - body: none
+
+- Successful Response
+    - Headers:
+        - Content-Type: application/json
+    - Body:
+    ```json
+    {
+      "points": "10"
+    }
+    ```
+- Error Response: No receipt found for that id
+    - Status Code: 404
+    - Headers:
+        - Content-Type: application/json
+    - Body:
+    ```json
+    {
+      "message": "No receipt found for that id",
+      "status": 404
+    }
+    ```
+
+## *Post A New Receipt
+Creates new receipt data
+Returns points for receipt provided by the receipt's ID
+- Request
+    - Method: POST
+    - URL: `/receipts/process`
+    - body:
+    ```json
+    {
+      "retailer": "Store Name",
+      "purchaseDate": "2022-12-01",
+      "purchaseTime": "13:00",
+      "total": "13.37",
+      "items": [
+        {
+          "shortDescription": "Item Name",
+          "price": "2.00"
+        }
+      ],
+    }
+    ```
+
+- Successful Response
+    - Headers:
+        - Content-Type: application/json
+    - Body:
+    ```json
+    {
+      "points": "10"
+    }
+    ```
+- Error Response: The receipt is invalid
+    - Status Code: 400
+    - Headers:
+        - Content-Type: application/json
+    - Body:
+    ```json
+    {
+      "message": "The receipt is invalid",
+      "status": 400
+    }
+    ```
+
+Note: You can test the POST API by inputting [this fetch request](https://github.com/dayjyun/receipt-processor-challenge/blob/main/fetchRequest.js) into your browser's console
 
 ## Notes
 
@@ -8,4 +166,4 @@ Inside of data.js, I commented out an alternative solution named `getPoints()` t
 
 By keeping SRP in mind, I created inner functions for each point requisite to add to the point counter, and if in the future there happened to be an error in the code or needed to be modified, it would be identifiable more easily compared to a chain of statements.
 
-Feel free to let me know if you have any questions. I had plenty of fun working on the project!
+Feel free to let me know if you have any questions. Have fun!
