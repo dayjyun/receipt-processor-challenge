@@ -29,6 +29,7 @@ for(let i = 0; i < receiptsArr.length; i++){
   }
   if(receipt.points === undefined){
     receipt.points = calculatePoints(receipt)
+    // receipt.points = getPoints(receipt) // Alternative
   }
 }
 
@@ -167,6 +168,7 @@ let getAllReceipts = () => {
 let addReceipt = (receipt) => {
   let id = idGenerator();
   let points = calculatePoints(receipt)
+  // let points = getPoints(receipt) // Alternative
   let newReceipt = { ...receipt, id, points };
   receiptsArr.push(newReceipt);
   return newReceipt;
