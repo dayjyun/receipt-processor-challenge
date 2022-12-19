@@ -1,23 +1,20 @@
 const router = require("express").Router()
 
-const { application } = require("express");
 const {
-  // getSimpleReceipts,
   addReceipt,
   getReceiptById,
-  getPointsById,
   getAllReceipts
 } = require('../data')
 
-// GET
+
+// GET get points for receipt by ID
 router.get("/:receiptId/points", (req, res) => {
   const { receiptId } = req.params;
   const receipt = getReceiptById(receiptId)
-  const points = getPointsById(receiptId)
 
   if (receipt) {
     res.status(200);
-    res.json({ points })
+    res.json({ points: receipt.points })
   } else {
     const error = new Error("No receipt found for that id");
     error.status = 404;
@@ -26,6 +23,7 @@ router.get("/:receiptId/points", (req, res) => {
 });
 
 
+// Get receipt by ID
 router.get("/:receiptId", (req, res) => {
   const { receiptId } = req.params;
   const receipt = getReceiptById(receiptId)
@@ -41,17 +39,26 @@ router.get("/:receiptId", (req, res) => {
 });
 
 
+// Display all receipts
 router.get('/', async(req, res) => {
   const allReceipts = await getAllReceipts()
   res.send(allReceipts)
 })
 
 
-// POST
+// POST new receipt
 router.post("/process", async (req, res) => {
-  const receipt = await addReceipt(req.body);
-  res.status(201)
-  res.json({ id: receipt.id });
+  const { retailer, purchaseDate, purchaseTime, total, items } = req.body;
+
+  if(!retailer || !purchaseDate || !purchaseTime || !total || !items.length ){
+    const error = new Error("The receipt is invalid");
+    error.status = 400;
+    throw error;
+  } else {
+    const receipt = await addReceipt(req.body);
+    res.status(200)
+    res.json({ id: receipt.id });
+  }
 });
 
 module.exports = router;

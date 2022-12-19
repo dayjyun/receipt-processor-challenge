@@ -37,6 +37,7 @@ for(let i = 0; i < receiptsArr.length; i++){
 function calculatePoints(receipt) {
   points = 0;
 
+  // One point per alphanumeric char
   function retailerNameLength(receipt) {
     let count = 0,
       regex = /^[a-zA-Z0-9]$/;
@@ -51,22 +52,26 @@ function calculatePoints(receipt) {
   }
 
 
+  // 50 points if dollar amount is rounded
   function isRounded(receipt) {
     receipt.total % 1 === 0 ? (points += 50) : (points += 0);
   }
 
 
+  // 25 points if total is multiple of .25
   function isMultipleOf25(receipt) {
     receipt.total % 0.25 === 0 ? (points += 25) : (points += 0);
   }
 
 
+  // 5 points for every 2 items on receipt
   function fiveForEveryTwo(receipt) {
     let halfItems = Math.floor(receipt.items.length / 2);
     points += halfItems * 5;
   }
 
 
+  // Check if length is divisible by 3
   function isDescriptionLength3(receipt) {
     for (let item of receipt.items) {
       if (item.shortDescription.length % 3 === 0) {
@@ -76,6 +81,7 @@ function calculatePoints(receipt) {
   }
 
 
+  // 6 points if purchase date is odd
   // Assuming date is YYYY-MM-DD
   function isDateOdd(receipt) {
     let date = receipt.purchaseDate,
@@ -87,6 +93,7 @@ function calculatePoints(receipt) {
   }
 
 
+  // 10 points if purchase is between hours 2PM and 4PM
   function between2And4(receipt) {
     let time = receipt.purchaseTime;
     time = +time.split(":").join('')
@@ -156,18 +163,11 @@ let getReceiptById = id => {
   }
 }
 
-let getPointsById = id => {
-  for(let receipt of receiptsArr){
-    receipt.points = calculatePoints(receipt)
-    if (receipt.id === id) {
-      return receipt.points;
-    }
-  }
-}
 
 let getAllReceipts = () => {
   return receiptsArr;
 }
+
 
 let addReceipt = (receipt) => {
   let id = idGenerator();
@@ -181,5 +181,4 @@ module.exports = {
   getAllReceipts,
   addReceipt,
   getReceiptById,
-  getPointsById,
 };
