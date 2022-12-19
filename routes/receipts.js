@@ -8,7 +8,7 @@ const {
 
 
 // GET get points for receipt by ID
-router.get("/:receiptId/points", (req, res) => {
+router.get("/:receiptId/points", (req, res, next) => {
   const { receiptId } = req.params;
   const receipt = getReceiptById(receiptId)
 
@@ -18,13 +18,13 @@ router.get("/:receiptId/points", (req, res) => {
   } else {
     const error = new Error("No receipt found for that id");
     error.status = 404;
-    throw error;
+    return next(error)
   }
 });
 
 
 // Get receipt by ID
-router.get("/:receiptId", (req, res) => {
+router.get("/:receiptId", (req, res, next) => {
   const { receiptId } = req.params;
   const receipt = getReceiptById(receiptId)
 
@@ -34,7 +34,7 @@ router.get("/:receiptId", (req, res) => {
   } else {
     const error = new Error("No receipt found for that id");
     error.status = 404;
-    throw error;
+    return next(error)
   }
 });
 
@@ -47,13 +47,14 @@ router.get('/', async(req, res) => {
 
 
 // POST new receipt
-router.post("/process", async (req, res) => {
+router.post("/process", async (req, res, next) => {
   const { retailer, purchaseDate, purchaseTime, total, items } = req.body;
 
   if(!retailer || !purchaseDate || !purchaseTime || !total || !items.length ){
     const error = new Error("The receipt is invalid");
+    // error.errors = ["The receipt is invalid", "400"]
     error.status = 400;
-    throw error;
+    return next(error)
   } else {
     const receipt = await addReceipt(req.body);
     res.status(200)

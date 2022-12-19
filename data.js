@@ -150,11 +150,6 @@ function calculatePoints(receipt) {
 // }
 
 
-// let getSimpleReceipts = () => {
-//   return simpleReceipts
-// };
-
-
 let getReceiptById = id => {
   for(let receipt of receiptsArr){
     if(receipt.id === id){

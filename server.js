@@ -5,6 +5,18 @@ const receiptsRouter = require('./routes/receipts')
 app.use(express.json())
 app.use('/receipts', receiptsRouter);
 
+// Error handler
+app.use((err, req, res, next) => {
+    res.status(err.status || 500)
+    res.send({
+        error: {
+            status: err.status || 500,
+            message: err.message
+        }
+    })
+})
+
+
 app.get('/', (req, res) => {
     res.send("Hello!")
 })
