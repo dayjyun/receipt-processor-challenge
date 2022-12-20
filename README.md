@@ -117,6 +117,9 @@ Returns points for receipt provided by the receipt's ID
 ## *Post A New Receipt
 Creates new receipt data
 Returns points for receipt provided by the receipt's ID
+<br>
+
+Note: You can test the POST API by inputting [this fetch request](https://github.com/dayjyun/receipt-processor-challenge/blob/main/fetchRequest.js) into your browser's console
 - Request
     - Method: POST
     - URL: `/receipts/process`
@@ -157,7 +160,6 @@ Returns points for receipt provided by the receipt's ID
     }
     ```
 
-Note: You can test the POST API by inputting [this fetch request](https://github.com/dayjyun/receipt-processor-challenge/blob/main/fetchRequest.js) into your browser's console
 
 ## Notes
 
