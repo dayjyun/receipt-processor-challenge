@@ -1,7 +1,7 @@
-const simpleReceipts = require("./examples/simple-receipt.json");
-const morningReceipt = require('./examples/morning-receipt.json')
-const mmReceipt = require('./examples/m&m-receipt.json')
-const targetReceipt = require('./examples/target-receipt.json')
+const simpleReceipts = require("../examples/simple-receipt.json");
+const morningReceipt = require('../examples/morning-receipt.json')
+const mmReceipt = require('../examples/m&m-receipt.json')
+const targetReceipt = require('../examples/target-receipt.json')
 
 let receiptsArr = [simpleReceipts, morningReceipt, mmReceipt, targetReceipt]
 
